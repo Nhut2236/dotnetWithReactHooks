@@ -1,0 +1,17 @@
+﻿button,
+.button {
+    margin-bottom: 0 !important;
+    margin-right: .5rem;
+}
+
+.dialogLg {
+    width: 300px !important;
+}
+
+li.link-wrapper > a.active {
+    display: block;
+    width: 100%;
+    height: 100%;
+    color: white;
+    background-color: blue;
+}
