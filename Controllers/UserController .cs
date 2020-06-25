@@ -167,7 +167,10 @@ namespace BookingServices.Controllers
                 var tokenString = GenerateJSONWebToken(user);
                 response = Ok(new { token = tokenString, user = user });
             }
-
+            else
+            {
+                response = Ok(new { error = "Unauthorized" });
+            }
             return response;
         }
 

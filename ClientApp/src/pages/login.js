@@ -1,5 +1,6 @@
 import React, { useState, useEffect  } from "react";
 import LoginForm from "../components/forms/LoginForm";
+import Toast from "../components/toasts/BasicToast"; 
 
 const redirectTo = (path) => {
     window.location.href = path;
@@ -8,7 +9,12 @@ const redirectTo = (path) => {
 const Login = () => {
     var loginForm = { Username: "", Password: ""};
     const [Token, setToken] = useState(null);
+    const [calledApi, setCalledApi] = useState(false);
+    const toggleShow = () => {
+      setCalledApi(false);
+    };
     const LoginFromApi = async (data) => {
+      try{
         const apiPath = `/api/User/Login`;
         const response = await fetch(apiPath, {
           method: "POST",
@@ -18,15 +24,23 @@ const Login = () => {
           },
            body: JSON.stringify(data),
         }).then((response) => {
-          response.json().then( async (response) => {
-            if (response && response.token) {
-              setToken(response.token);
-              localStorage.setItem("TOKEN", response.token);
-              localStorage.setItem("UserInfo", JSON.stringify(response.user));
-              redirectTo('/');
-            }
-          });
+            response.json().then(async (response) => {
+              if (response && response.token) {
+                setToken(response.token);
+                localStorage.setItem("TOKEN", response.token);
+                localStorage.setItem("UserInfo", JSON.stringify(response.user));
+                redirectTo('/');
+              }
+              else{
+                setCalledApi(true);
+              }
+            });
         });
+      }
+      catch(e){
+        console.log(e);
+      }
+
     }
 
   const divStyle = {
@@ -39,6 +53,9 @@ const Login = () => {
       <div className="flex-large">
         <LoginForm loginForm={loginForm} login={LoginFromApi} />
       </div>
+    </div>
+    <div>
+    { calledApi == true ? (<Toast toggleShow={toggleShow} show={calledApi} message="Đăng nhập thất bại" />) : ''}
     </div>
   </div> 
   );

@@ -2,6 +2,7 @@ import React, { useState, useEffect  } from "react";
 import { Toast } from "react-bootstrap";
 
 const BasicToast = props => {
+    const [show, setShow] = useState(props.show);
     return (
       <div
         style={{
@@ -10,20 +11,12 @@ const BasicToast = props => {
           right: 10,
         }}
       >
-        <Toast    
-          delay={3000}
-          autohide
-        >
+        <Toast onClose={props.toggleShow} show={show} delay={2000} autohide>
           <Toast.Header>
-            <img
-              src="holder.js/20x20?text=%20"
-              className="rounded mr-2"
-              alt=""
-            />
-            <strong className="mr-auto">Thông báo</strong>
-            <small>11 mins ago</small>
+            <i className="fa fa-info-circle" />
+            <strong className="mr-auto ml-2">Thông báo</strong>
           </Toast.Header>
-          <Toast.Body> Đăng ký thành công ! </Toast.Body>
+          <Toast.Body> {props.message} </Toast.Body>
         </Toast>
       </div>
     );

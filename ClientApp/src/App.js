@@ -28,6 +28,7 @@ const userInfo = JSON.parse(localStorage.getItem("UserInfo"));
 
 const userNameStyle = {
     color: 'white',
+    textDecoration: 'none'
 };
 
 //css
@@ -65,7 +66,18 @@ const App = () => {
                       title={userInfo.Name}
                       id="basic-nav-dropdown"
                       style={userNameStyle}
+                      style={{ paddingRight: '5px'}}
                     >
+                      <NavDropdown.Item>
+                        Quản lý Blog
+                      </NavDropdown.Item>
+                      <NavDropdown.Item>
+                        Quản lý Event
+                      </NavDropdown.Item>
+                      <NavDropdown.Item>
+                        Quản lý User
+                      </NavDropdown.Item>
+                      <NavDropdown.Divider />
                       <NavDropdown.Item
                         onClick={() => {
                           logOut();
