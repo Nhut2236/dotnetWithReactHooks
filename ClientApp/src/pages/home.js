@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import BlogDetailsCarousel from '../components/carousel/BlogDetailsCarousel';
 import ComingEventsCards from '../components/cards/ComingEventsCards';
 import {INTRO_ITEMS} from '../constants/common';
-import {Row, Col} from 'react-bootstrap';
+import {Row, Col, Button} from 'react-bootstrap';
 
 const Home = () => {
   const introItems = INTRO_ITEMS;
@@ -12,6 +12,9 @@ const Home = () => {
   const bannerStyle = {
     height: '300px'
   };
+  const redirectTo = (path) => {
+    window.location.href = path;
+  }
   const titleStyle = {
     fontWeight: '600',
     fontSize: '24px'
@@ -42,7 +45,7 @@ const Home = () => {
   useEffect(()=>{
     getEventList();
   },[]);
-  
+
   return (
     <div>
       <div style={bannerStyle} className="mt-3">
@@ -51,30 +54,50 @@ const Home = () => {
         </div>
         <div className="container">
           <Row>
-            { introItems && introItems.length ? introItems.map( (item, index) => (
-                <Col md="4" key={index}>
-                  <img src={item.image} />
-                  <div className="mt-4" style={titleStyle}>{item.title}</div>
-                  <div className="mt-4">{item.text}</div>
-                </Col>
-            )) : "" }
+            {introItems && introItems.length
+              ? introItems.map((item, index) => (
+                  <Col md="4" key={index}>
+                    <img src={item.image} />
+                    <div className="mt-4" style={titleStyle}>
+                      {item.title}
+                    </div>
+                    <div className="mt-4">{item.text}</div>
+                  </Col>
+                ))
+              : ""}
           </Row>
         </div>
         <section style={sessionGrayStyle} className="text-center">
           <div className="container">
-              <div style={titleStyle}>Sự kiện sắp diễn ra</div>
-              <div style={{ fontSize: '16px', marginTop: '16px' , marginBottom: '33px', maxWidth: '610px'}}>
-                Những sự kiện này chia sẻ những ý tưởng mới, sáng tạo mới giúp trẻ phát triển về sức khỏe, khám phá tự nhiên, mỹ thuật, mối quan hệ xã hội và khả năng giao tiếp
-              </div>
-              <div className="mt-4">
+            <div style={titleStyle}>Sự kiện sắp diễn ra</div>
+            <div
+              style={{
+                fontSize: "16px",
+                marginTop: "16px",
+                marginBottom: "33px",
+                maxWidth: "610px",
+              }}
+            >
+              Những sự kiện này chia sẻ những ý tưởng mới, sáng tạo mới giúp trẻ
+              phát triển về sức khỏe, khám phá tự nhiên, mỹ thuật, mối quan hệ
+              xã hội và khả năng giao tiếp
+            </div>
+            <div className="mt-4">
               <Row>
-                {eventList && eventList.Data && eventList.Data.length ? eventList.Data.map((event, index) =>  (
-                  <Col md="4" key={index} className="text-center">
-                    <ComingEventsCards data={event} />
-                  </Col>
-                ) ) : ""}
-              </Row>          
-              </div>
+                {eventList && eventList.Data && eventList.Data.length
+                  ? eventList.Data.map((event, index) => (
+                      <Col md="4" key={index} className="text-center">
+                        <ComingEventsCards data={event} />
+                      </Col>
+                    ))
+                  : ""}
+              </Row>
+            </div>
+            <div style={{textAlign: 'center', marginTop:'40px'}}>
+              <Button onClick={()=> redirectTo('/blog') } style={{ background: 'transparent linear-gradient(233deg, #FBAF2A 0%, #F9D21B 100%) 0% 0% no-repeat' , padding: '15px 38px', borderRadius: '10px',textDecoration: 'none', fontWeight: '600px', border: 'none', outline: 'none' }} >
+                Tải thêm
+              </Button>
+            </div>
           </div>
         </section>
       </div>
