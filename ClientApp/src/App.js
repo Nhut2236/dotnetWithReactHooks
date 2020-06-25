@@ -24,9 +24,7 @@ const logOut = () => {
 
 const Token = localStorage.getItem("TOKEN");
 
-const Email = localStorage.getItem("EMAIL");
-
-const Avatar = localStorage.getItem("AVATAR");
+const userInfo = JSON.parse(localStorage.getItem("UserInfo"));
 
 const userNameStyle = {
     color: 'white',
@@ -39,87 +37,91 @@ const avatarStyle = {
 
 const App = () => {
     return (
+      <div>
         <div>
+          <Router>
             <div>
-                <Router>
-                    <div>
-                        <Navbar expand="lg" bg="light">
-                            <Navbar.Brand href="/">React-Bootstrap</Navbar.Brand>
-                            <Navbar.Toggle aria-controls="basic-navbar-nav" />
-                            <Navbar.Collapse id="basic-navbar-nav">
-                                <Nav className="mr-auto">
-                                    <Nav.Link href="/">Home</Nav.Link>
-                                    <Nav.Link href="/about">About</Nav.Link>
-                                    <Nav.Link href="/blog">Blog</Nav.Link>
-                                </Nav>
-                                {Token && Email && Avatar ? (
-                                    <Image src={Avatar} roundedCircle style={avatarStyle} />
-                                ) : (
-                                        <span></span>
-                                    )}
+              <Navbar expand="lg" bg="light">
+                <Navbar.Brand href="/">React-Bootstrap</Navbar.Brand>
+                <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                <Navbar.Collapse id="basic-navbar-nav">
+                  <Nav className="mr-auto">
+                    <Nav.Link href="/">Home</Nav.Link>
+                    <Nav.Link href="/about">About</Nav.Link>
+                    <Nav.Link href="/blog">Blog</Nav.Link>
+                  </Nav>
+                  {Token && userInfo && userInfo.Avatar ? (
+                    <Image
+                      src={userInfo.Avatar}
+                      roundedCircle
+                      style={avatarStyle}
+                    />
+                  ) : (
+                    <span></span>
+                  )}
 
-                                {Token && Email && Avatar ? (
-                                    <NavDropdown
-                                        title={Email}
-                                        id="basic-nav-dropdown"
-                                        style={userNameStyle}
-                                    >
-                                        <NavDropdown.Item
-                                            onClick={() => {
-                                                logOut();
-                                            }}
-                                        >
-                                            Log out
-                    </NavDropdown.Item>
-                                    </NavDropdown>
-                                ) : (
-                                        <div>
-                                            <Button
-                                                variant="danger"
-                                                className="mr-2"
-                                                onClick={() => redirectTo("/register")}
-                                            >
-                                                Sign Up
-                    </Button>
-                                            <Button
-                                                variant="primary"
-                                                onClick={() => redirectTo("/login")}
-                                            >
-                                                Sign In
-                    </Button>
-                                        </div>
-                                    )}
-                            </Navbar.Collapse>
-                        </Navbar>
-                        <Suspense fallback={<div>Loading...</div>}>
-                            <Switch>
-                                <Route path={REGISTER}>
-                                    <RegisterComponent />,
-                </Route>
-                                <Route path={LOGIN}>
-                                    <LoginComponent />,
-                </Route>
-                                <Route path={BLOG}>
-                                    <BlogComponent />,
-                </Route>
-                                <Route path={BLOGDETAILS}>
-                                    <BlogDetailsComponent />,
-                </Route>
-                                <Route path={ABOUT}>
-                                    <AboutComponent />
-                                </Route>
-                                <Route path={HOME}>
-                                    <HomeComponent />,
-                </Route>
-                            </Switch>
-                        </Suspense>
+                  {Token && userInfo && userInfo.Name ? (
+                    <NavDropdown
+                      title={userInfo.Name}
+                      id="basic-nav-dropdown"
+                      style={userNameStyle}
+                    >
+                      <NavDropdown.Item
+                        onClick={() => {
+                          logOut();
+                        }}
+                      >
+                        Log out
+                      </NavDropdown.Item>
+                    </NavDropdown>
+                  ) : (
+                    <div>
+                      <Button
+                        variant="danger"
+                        className="mr-2"
+                        onClick={() => redirectTo("/register")}
+                      >
+                        Sign Up
+                      </Button>
+                      <Button
+                        variant="primary"
+                        onClick={() => redirectTo("/login")}
+                      >
+                        Sign In
+                      </Button>
                     </div>
-                </Router>
+                  )}
+                </Navbar.Collapse>
+              </Navbar>
+              <Suspense fallback={<div>Loading...</div>}>
+                <Switch>
+                  <Route path={REGISTER}>
+                    <RegisterComponent />,
+                  </Route>
+                  <Route path={LOGIN}>
+                    <LoginComponent />,
+                  </Route>
+                  <Route path={BLOG}>
+                    <BlogComponent />,
+                  </Route>
+                  <Route path={BLOGDETAILS}>
+                    <BlogDetailsComponent />,
+                  </Route>
+                  <Route path={ABOUT}>
+                    <AboutComponent />
+                  </Route>
+                  <Route path={HOME}>
+                    <HomeComponent />,
+                  </Route>
+                </Switch>
+              </Suspense>
             </div>
-            <div>
-                <FloatButton />
-            </div>
+          </Router>
         </div>
+        <div>
+          <FloatButton />
+        </div>
+      </div>
     );
 }
 

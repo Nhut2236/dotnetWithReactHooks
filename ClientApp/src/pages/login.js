@@ -6,29 +6,9 @@ const redirectTo = (path) => {
 }
 
 const Login = () => {
-    var loginForm = { email: "", password: ""};
-    const [Token, setToken] = useState("");
-    const LoadUserProfile = async () => {
-        const apiPath = `https://reqres.in/api/users/4`;
-        const response = await fetch(apiPath, {
-            method: 'GET',
-            headers: {
-              'Accept': 'application/json',
-              'Content-Type':'application/json',
-            },
-          }).then(response => {
-            response.json().then(data =>{
-                console.log(data);
-                localStorage.setItem("EMAIL", data.data.email);
-                localStorage.setItem("AVATAR", data.data.avatar);
-            })
-          });
-        }
+    var loginForm = { Username: "", Password: ""};
+    const [Token, setToken] = useState(null);
     const LoginFromApi = async (data) => {
-        var loginForm = {
-            Username: data.email,
-            Password: data.password
-        }
         const apiPath = `/api/User/Login`;
         const response = await fetch(apiPath, {
           method: "POST",
@@ -36,15 +16,14 @@ const Login = () => {
             Accept: "application/json",
             "Content-Type": "application/json",
           },
-           body: JSON.stringify(loginForm),
+           body: JSON.stringify(data),
         }).then((response) => {
           response.json().then( async (response) => {
             if (response && response.token) {
               setToken(response.token);
               localStorage.setItem("TOKEN", response.token);
-              console.log(response);
-              //await LoadUserProfile();
-              //redirectTo('/');
+              localStorage.setItem("UserInfo", JSON.stringify(response.user));
+              redirectTo('/');
             }
           });
         });

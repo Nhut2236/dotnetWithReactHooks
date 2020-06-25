@@ -18,22 +18,22 @@ const LoginForm = props => {
   return (
     <form>
       <Form.Group controlId="formBasicEmail">
-        <Form.Label>Email</Form.Label>
+        <Form.Label>Username</Form.Label>
         <Form.Control
-          type="email"
-          placeholder="email"
-          name="email"
-          value={user.email}
+          type="text"
+          placeholder="Username"
+          name="Username"
+          value={user.Username}
           onChange={handleInputChange}
         />
       </Form.Group>
       <Form.Group controlId="formBasicEmail">
-        <Form.Label>Password</Form.Label>
+        <Form.Label>Mật khẩu</Form.Label>
         <Form.Control
           type="password"
-          placeholder="password"
-          name="password"
-          value={user.password}
+          placeholder="Password"
+          name="Password"
+          value={user.Password}
           onChange={handleInputChange}
         />
       </Form.Group>
