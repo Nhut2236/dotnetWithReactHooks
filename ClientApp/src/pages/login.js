@@ -24,22 +24,27 @@ const Login = () => {
             })
           });
         }
-    const LoginFromApi = async ( data ) =>{
-        const apiPath = `https://reqres.in/api/login`;
+    const LoginFromApi = async (data) => {
+        var loginForm = {
+            Username: data.email,
+            Password: data.password
+        }
+        const apiPath = `/api/User/Login`;
         const response = await fetch(apiPath, {
           method: "POST",
           headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(data),
+           body: JSON.stringify(loginForm),
         }).then((response) => {
           response.json().then( async (response) => {
             if (response && response.token) {
               setToken(response.token);
               localStorage.setItem("TOKEN", response.token);
-              await LoadUserProfile();
-              redirectTo('/');
+              console.log(response);
+              //await LoadUserProfile();
+              //redirectTo('/');
             }
           });
         });

@@ -1,18 +1,28 @@
+using BookingServices.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace HooksLearning
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        private IConfigurationRoot _configurationRoot;
+        public Startup(IHostingEnvironment hostingEnvironment)
         {
-            Configuration = configuration;
+            _configurationRoot = new ConfigurationBuilder()
+                    .SetBasePath(hostingEnvironment.ContentRootPath)
+                    .AddJsonFile("appsettings.json")
+                    .AddJsonFile($"appsettings.{hostingEnvironment.EnvironmentName}.json", optional: true)
+                    .Build();
         }
 
         public IConfiguration Configuration { get; }
@@ -27,6 +37,30 @@ namespace HooksLearning
             {
                 configuration.RootPath = "ClientApp/build";
             });
+
+            services.AddDbContext<BookingServicesContext>(options =>
+               options.EnableSensitiveDataLogging(true)
+                       .UseSqlServer(_configurationRoot.GetConnectionString("DefaultConnection")));
+            var Key = "ThisismySecretKey";
+            var Issuer = "Test.com";
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                 .AddJwtBearer(options =>
+                 {
+                     options.TokenValidationParameters = new TokenValidationParameters
+                     {
+                         ValidateIssuer = true,
+                         ValidateAudience = true,
+                         ValidateLifetime = true,
+                         ValidateIssuerSigningKey = true,
+                         ValidIssuer = Issuer,
+                         ValidAudience = Issuer,
+                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Key))
+                     };
+                 });
+            // Add framework services.
+            services.AddMvc().AddJsonOptions(options => options.SerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.DefaultContractResolver()).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            services.AddSession();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -46,7 +80,7 @@ namespace HooksLearning
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
-
+            app.UseAuthentication();
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
