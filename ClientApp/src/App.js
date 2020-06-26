@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { HOME, ABOUT, BLOG, BLOGDETAILS, LOGIN, REGISTER } from "./router";
 import { Image, NavDropdown } from 'react-bootstrap';
 import FloatButton from './components/floatButton/FloatButton';
+import ReactIcon from './assets/svgs/react.svg';
 //import PageComponents
 const HomeComponent = React.lazy(() => import("./pages/home"));
 const AboutComponent = React.lazy(() => import("./pages/about"));
@@ -42,14 +43,14 @@ const App = () => {
         <div>
           <Router>
             <div>
-              <Navbar expand="lg" bg="light">
-                <Navbar.Brand href="/">React-Bootstrap</Navbar.Brand>
+              <Navbar expand="lg" bg="" className="container" style={{backgroundColor: 'none'}}>
+                <Navbar.Brand href="/" style={{marginRight: '30px'}}><img src={ReactIcon} style={{ width: '50px'}} /><span className="ml-3">React Demo</span></Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                   <Nav className="mr-auto">
-                    <Nav.Link href="/">Home</Nav.Link>
-                    <Nav.Link href="/about">About</Nav.Link>
-                    <Nav.Link href="/blog">Blog</Nav.Link>
+                    <Nav.Link href="/" style={{ fontSize: '18px', marginRight: '30px'}}>Home</Nav.Link>
+                    <Nav.Link href="/about" style={{ fontSize: '18px', marginRight: '30px'}}>About</Nav.Link>
+                    <Nav.Link href="/blog" style={{ fontSize: '18px', marginRight: '30px'}}>Blog</Nav.Link>
                   </Nav>
                   {Token && userInfo && userInfo.Avatar ? (
                     <Image
@@ -66,7 +67,7 @@ const App = () => {
                       title={userInfo.Name}
                       id="basic-nav-dropdown"
                       style={userNameStyle}
-                      style={{ paddingRight: '5px'}}
+                      style={{ paddingRight: '5px', color: 'black'}}
                     >
                       <NavDropdown.Item href="/blog">
                         Quản lý Blog
