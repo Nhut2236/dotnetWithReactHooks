@@ -65,7 +65,7 @@ const Blog = () => {
 
   const editRow = (blog) => {
     setEditing(true)
-    setCurrentBlog(title,blog);
+    setCurrentBlog(blog);
   };
 
   const changePage = (pageIndex) => {
@@ -181,7 +181,7 @@ const Blog = () => {
       </div>
       {editing == true ? (
         <BlogModal
-          Title="Edit Blog Form"
+          Title="Cập nhật blog"
           data={currentBlog}
           closeModal={handleToggle}
           updateData={updateData}

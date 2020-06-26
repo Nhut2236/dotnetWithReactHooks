@@ -5,12 +5,15 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { store } from '../../store';
-
+import ReactQuill from 'react-quill'; 
+import 'react-quill/dist/quill.snow.css'; // ES6
+import {TAG_LIST} from '../../constants/common';
+import { Select } from 'element-react/next';
 const BlogModal = props => {
     const [ blog, setBlog ] = useState(props.data);
-    const [ open, setOpen] = React.useState(true);  
-    const [ fullWidth, setFullWidth ] = React.useState(true);
-    const [ maxWidth, setMaxWidth ] = React.useState('sm');
+    const [ open, setOpen] = useState(true);  
+    const [ fullWidth, setFullWidth ] = useState(true);
+    const [ maxWidth, setMaxWidth ] = useState('sm');
     useEffect(
       () => {
         setBlog(props.data)
@@ -29,12 +32,14 @@ const BlogModal = props => {
     }
 
     const getDataFromApi = async () => {
-        const apiPath = `https://reqres.in/api/users/${blog.id}`;
+        const Token = localStorage.getItem("TOKEN");
+        const apiPath = `/api/Event/Update`;
         const response = await fetch(apiPath, {
-            method: 'PUT',
+            method: 'POST',
             headers: {
               'Accept': 'application/json',
               'Content-Type':'application/json',
+              'Authorization': `Bearer ${Token}`
             },
             body: JSON.stringify(blog)
           }).then(response => {
@@ -45,8 +50,11 @@ const BlogModal = props => {
     }
 
     const globalState = useContext(store);
-    console.log(globalState.state);
-    
+
+    const handleChange = (value) => {
+      blog.Content =  value;
+    }
+
     return (
       <Dialog  
         open={open}
@@ -56,20 +64,30 @@ const BlogModal = props => {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">{props.Title}</DialogTitle>
+        <DialogTitle id="alert-dialog-title" style={{backgroundColor: '#333c45', color: 'white'}}>{props.Title}</DialogTitle>
         <DialogContent>
         <Form.Group controlId="formBasicEmail">
-             <Form.Label>First Name</Form.Label>
-             <Form.Control type="text" placeholder="first_name" name="first_name" value={blog.first_name} onChange={handleInputChange}  />
+             <Form.Label>Tiêu đề</Form.Label>
+             <Form.Control type="text" placeholder="Title" name="Title" value={blog.Title} onChange={handleInputChange}  />
             </Form.Group>
             <Form.Group controlId="formBasicEmail">
-                    <Form.Label>Last Name</Form.Label>
-                    <Form.Control type="text" placeholder="last_name" name="last_name" value={blog.last_name} onChange={handleInputChange}  />
+                    <Form.Label>Mô tả</Form.Label>
+                    <Form.Control type="text" placeholder="Description" name="Description" value={blog.Description} onChange={handleInputChange}  />
             </Form.Group>
             <Form.Group controlId="formBasicEmail">
-                    <Form.Label>Email</Form.Label>
-                    <Form.Control type="email" placeholder="email" name="email" value={blog.email} onChange={handleInputChange} />
+                    <Form.Label>Nội dung</Form.Label>
+                    <ReactQuill value={blog.Content} onChange={handleChange} />
             </Form.Group>
+            <Form.Group controlId="formBasicEmail">
+                    <Form.Label>Tag</Form.Label>
+                    <Select value={blog.InGroup} multiple={true}>
+                      {
+                        TAG_LIST.map( tag => {
+                          return <Select.Option key={tag.code} label={tag.name} value={tag.code} />
+                        })
+                      }
+                    </Select>  
+              </Form.Group>
         </DialogContent>
         <DialogActions>
             <Button variant="secondary" onClick={()=> props.closeModal() }>Hủy</Button>

@@ -10,6 +10,12 @@ export const BLOG_DATA = [
     { id: 3, title: "Title blog 3" }
 ];
 
+export const TAG_LIST = [
+  { code: 'NuoiDayCon', name: 'Nuôi dạy con', color: "#F68887" },
+  { code: 'ChamSocCon', name: 'Chăm sóc con', color: "#5CA2D5" },
+  { code: 'ChoiCungCon', name: 'Chơi cùng con', color: "#16B55A" },
+  { code: 'LifeStyle', name: 'LIFESTYLE', color: "#FBAF2A" },
+];
 
 export const BANNER_ITEMS = [
     {
