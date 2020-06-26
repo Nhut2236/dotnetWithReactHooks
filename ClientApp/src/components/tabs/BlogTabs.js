@@ -1,15 +1,18 @@
-import React, { useContext, useEffect } from 'react';
-import { Table, Image, Button } from 'react-bootstrap';
+import React, { useContext, useEffect, useState } from 'react';
+import { Table, Image, Button, Form } from 'react-bootstrap';
 import { Redirect } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import Pagination from '@material-ui/lab/Pagination';
+import NoImage from '../../assets/svgs/no-image.svg';
+import { store } from '../../store';
 
 function redirectTo(path){
   window.location.href = path;
 }
 
 const avatarStyle = {
-  width: '50px',
+  width: '120px',
+  height: '80px'
 };
 
 const useStyles = makeStyles((theme) => ({
@@ -22,46 +25,102 @@ const useStyles = makeStyles((theme) => ({
 
 const iconStyle = {
   cursor: 'pointer',
+  fontSize: '16px'
 };
 
 const tableStyle = {
   overflowX: 'auto',
+  fontSize: '13px'
 };
 
 const paginationStyle = {
   float: 'right',
 };
 
-const BlogTabs = props => { 
+const BlogTabs = props => {
+  const [ checkList, setCheckList ] = useState([]);
+  useEffect(()=>{
+    var currentCheckList = checkList;
+    for(var i = 0; i < props.blogList.length; i++ ){
+      currentCheckList.push(false);
+    };
+    setCheckList(currentCheckList);
+  },[]);
+  const [ checkAll, setCheckAll ] = useState(props.checkAll);
   const classes = useStyles();
+  const handleChange = ({target}) => {
+    if(target.name=='checkAll'){
+      var currentCheckList = [];
+      for(var i = 0; i < props.blogList.length; i++ ){
+        currentCheckList.push(target.value);
+      };
+      setCheckList(currentCheckList);
+    }
+    props.check(target);
+  };
   return (
     <div>
       <div>
-        <Table striped bordered hover variant="dark" style={tableStyle}>
+        <Table striped hover responsive variant="light" style={tableStyle}>
           <thead>
-            <tr className="text-center">
-              <th>Avatar</th>
-              <th>First Name</th>
-              <th>Last Name</th>
-              <th>Email</th>
-              <th>Setting</th>
+            <tr style={{ backgroundColor: "#333c45", color: "white" }}>
+              <th className="text-center">
+                <input
+                  type="checkbox"
+                  name="checkAll"
+                  value={checkAll}
+                  onChange={(e) =>
+                    handleChange({
+                      target: {
+                        name: "checkAll",
+                        value: e.target.checked,
+                      },
+                    })
+                  }
+                />
+              </th>
+              <th className="text-center">Ảnh đại diện</th>
+              <th style={{minWidth: '200px'}}>Tiêu đề</th>
+              <th className="text-center">Mô tả</th>
+              <th className="text-center">Trạng thái</th>
+              <th className="text-center">Thao tác</th>
             </tr>
           </thead>
           <tbody>
             {props.blogList.length > 0 ? (
-              props.blogList.map((blog) => (
-                <tr key={blog.id}>
-                  <td className="text-center">
-                    <Image
-                      src={blog.avatar}
-                      roundedCircle
-                      style={avatarStyle}
+              props.blogList.map((blog, index) => (
+                <tr key={index}>
+                  <td className="text-center align-middle">
+                    <input
+                      type="checkbox"
+                      name="checkList"
+                      className="custorm-checkbox pointer"
+                      value={checkList[index]}
+                      onChange={(e) =>
+                        handleChange({
+                          target: {
+                            name: blog.Id,
+                            value: e.target.checked,
+                          },
+                        })
+                      }
                     />
                   </td>
-                  <td className="text-center">{blog.first_name}</td>
-                  <td className="text-center">{blog.last_name}</td>
-                  <td className="text-center">{blog.email}</td>
-                  <td className="text-center">
+                  <td className="text-center align-middle">
+                    {blog && blog.Avatar ? (
+                      <Image src={blog.Avatar} style={avatarStyle} />
+                    ) : (
+                      <Image src={NoImage} style={avatarStyle} />
+                    )}
+                  </td>
+                  <td className="font-weight-bold align-middle">
+                    {blog.Title}
+                  </td>
+                  <td className="align-middle">{blog.Description}</td>
+                  <td className="text-center font-weight-bold align-middle">
+                    {blog.IsPublish ? "Đang đăng" : "Chưa đăng"}
+                  </td>
+                  <td className="text-center align-middle">
                     <i
                       className="fa fa-edit"
                       onClick={() => props.editRow(blog)}
@@ -69,12 +128,12 @@ const BlogTabs = props => {
                     />
                     <i
                       className="fa fa-trash ml-3 mr-3"
-                      onClick={() => props.deleteBlog(blog.id)}
+                      onClick={() => props.deleteBlog(blog.Id)}
                       style={iconStyle}
                     />
                     <i
                       className="fa fa-info-circle"
-                      onClick={() => redirectTo(`/blogDetails/${blog.id}`)}
+                      onClick={() => redirectTo(`/blogDetails/${blog.Id}`)}
                       style={iconStyle}
                     />
                   </td>
@@ -82,7 +141,7 @@ const BlogTabs = props => {
               ))
             ) : (
               <tr>
-                <td colSpan={3}>No blog</td>
+                <td colSpan={5}>No blog</td>
               </tr>
             )}
           </tbody>

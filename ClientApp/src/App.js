@@ -68,7 +68,7 @@ const App = () => {
                       style={userNameStyle}
                       style={{ paddingRight: '5px'}}
                     >
-                      <NavDropdown.Item>
+                      <NavDropdown.Item href="/blog">
                         Quản lý Blog
                       </NavDropdown.Item>
                       <NavDropdown.Item>

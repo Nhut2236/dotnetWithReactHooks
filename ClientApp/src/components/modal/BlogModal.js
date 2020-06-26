@@ -45,7 +45,7 @@ const BlogModal = props => {
     }
 
     const globalState = useContext(store);
-    console.log(globalState.state.blogList);
+    console.log(globalState.state);
     
     return (
       <Dialog  

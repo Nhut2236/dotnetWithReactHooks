@@ -13,6 +13,9 @@ const StateProvider = ( { children } ) => {
       case 'SET_BLOGLIST':
         state.blogList = action.value;
         return state;
+      case 'SET_CHECKLIST_BLOG':
+          state.checkListBlog = action.value;
+          return state;
       default:
         throw new Error();
     };
