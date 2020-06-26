@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import BlogDetailsCarousel from '../components/carousel/BlogDetailsCarousel';
 import ComingEventsCards from '../components/cards/ComingEventsCards';
+import HomeFooter from '../components/footer/HomeFooter';
 import {INTRO_ITEMS} from '../constants/common';
 import {Row, Col, Button} from 'react-bootstrap';
 
@@ -19,11 +20,27 @@ const Home = () => {
     fontWeight: '600',
     fontSize: '24px'
   };
+
+  const contentStyle = {
+    fontSize: '16px',
+    textAlign: 'center',
+    marginTop: '20px',
+    marginBottom: '20px'
+  };
+
   const sessionGrayStyle = {
     backgroundColor: '#FAFAFA',
     marginTop: '40px',
     marginBottom: '40px',
     padding: '40px'
+  };
+
+  const sessionFooterStyle = {
+    backgroundColor: '#333C45',
+    marginTop: '80px',
+    padding: '46px 170px 46px 170px',
+    minHeight: '341px',
+    color: 'white'
   };
 
   const getEventList = async () => {
@@ -70,17 +87,14 @@ const Home = () => {
         <section style={sessionGrayStyle} className="text-center">
           <div className="container">
             <div style={titleStyle}>Sự kiện sắp diễn ra</div>
-            <div
-              style={{
-                fontSize: "16px",
-                marginTop: "16px",
-                marginBottom: "33px",
-                maxWidth: "610px",
-              }}
-            >
-              Những sự kiện này chia sẻ những ý tưởng mới, sáng tạo mới giúp trẻ
-              phát triển về sức khỏe, khám phá tự nhiên, mỹ thuật, mối quan hệ
-              xã hội và khả năng giao tiếp
+            <div style={contentStyle}>
+              <Row>
+                <Col md={{ span: "8", offset: "2" }}>
+                  Những sự kiện này chia sẻ những ý tưởng mới, sáng tạo mới giúp
+                  trẻ phát triển về sức khỏe, khám phá tự nhiên, mỹ thuật, mối
+                  quan hệ xã hội và khả năng giao tiếp
+                </Col>
+              </Row>
             </div>
             <div className="mt-4">
               <Row>
@@ -93,11 +107,28 @@ const Home = () => {
                   : ""}
               </Row>
             </div>
-            <div style={{textAlign: 'center', marginTop:'40px'}}>
-              <Button onClick={()=> redirectTo('/blog') } style={{ background: 'transparent linear-gradient(233deg, #FBAF2A 0%, #F9D21B 100%) 0% 0% no-repeat' , padding: '15px 38px', borderRadius: '10px',textDecoration: 'none', fontWeight: '600px', border: 'none', outline: 'none' }} >
+            <div style={{ textAlign: "center", marginTop: "40px" }}>
+              <Button
+                onClick={() => redirectTo("/blog")}
+                style={{
+                  background:
+                    "transparent linear-gradient(233deg, #FBAF2A 0%, #F9D21B 100%) 0% 0% no-repeat",
+                  padding: "15px 38px",
+                  borderRadius: "10px",
+                  textDecoration: "none",
+                  fontWeight: "600px",
+                  border: "none",
+                  outline: "none",
+                }}
+              >
                 Tải thêm
               </Button>
             </div>
+          </div>
+        </section>
+        <section style={sessionFooterStyle}>
+          <div className="container">
+            <HomeFooter />
           </div>
         </section>
       </div>
