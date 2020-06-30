@@ -5,12 +5,19 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { store } from '../../store';
-import ReactQuill from 'react-quill'; 
-import 'react-quill/dist/quill.snow.css'; // ES6
+import ReactQuill, { Quill, Mixin, Toolbar } from 'react-quill'; 
+import 'react-quill/dist/quill.snow.css';
 import {TAG_LIST} from '../../constants/common';
-import { Select } from 'element-react/next';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
+// import ImageDrop from 'quill-image-drop-module';
+// import ImageResize from 'quill-image-resize-module';
+// Quill.register('modules/imageResize', ImageResize);
+// Quill.register('modules/imageDrop', ImageDrop);
 const BlogModal = props => {
     const [ blog, setBlog ] = useState(props.data);
+    const inGroupParse = JSON.parse(blog.InGroup);
+    const [ inGroup, setInGroup ] = useState(inGroupParse);
     const [ open, setOpen] = useState(true);  
     const [ fullWidth, setFullWidth ] = useState(true);
     const [ maxWidth, setMaxWidth ] = useState('sm');
@@ -28,12 +35,17 @@ const BlogModal = props => {
     }
 
     const saveBlog = () => {
+        blog.InGroup = JSON.stringify(inGroup);
         getDataFromApi();
+    }
+
+    const redirectTo = (path) => {
+      window.location.href = path;
     }
 
     const getDataFromApi = async () => {
         const Token = localStorage.getItem("TOKEN");
-        const apiPath = `/api/Event/Update`;
+        const apiPath = `/api/Blog/Update`;
         const response = await fetch(apiPath, {
             method: 'POST',
             headers: {
@@ -43,9 +55,12 @@ const BlogModal = props => {
             },
             body: JSON.stringify(blog)
           }).then(response => {
-            response.json().then(data =>{
-                setBlog(data);
-            })
+            response.json().then(async (response) => {
+              if (response && response.data) {
+                setBlog(response.data);
+                props.closeModal();
+              }
+            });
           });
     }
 
@@ -54,6 +69,41 @@ const BlogModal = props => {
     const handleChange = (value) => {
       blog.Content =  value;
     }
+
+    const selectMulti = true;
+
+    const handleChangeTag = event => {
+      setInGroup(event.target.value);
+    };
+
+    const modules = {
+      // imageResize: {
+      //   parchment: Quill.import('parchment')
+      //   // See optional "config" below
+      // },
+      toolbar: [
+        [{ 'header': [1, 2, false] }],
+        ['bold', 'italic', 'underline','strike', 'blockquote'],
+        [{'list': 'ordered'}, {'list': 'bullet'}, {'indent': '-1'}, {'indent': '+1'}],
+        ['link', 'image', 'video'],
+        ['clean']
+      ],
+      // imageResize: {
+      //   displayStyles: {
+      //     backgroundColor: 'black',
+      //     border: 'none',
+      //     color: 'white'
+      //   },
+      //   modules: ['Resize', 'DisplaySize', 'Toolbar']
+      // },
+    };
+
+    const formats = [
+      'header',
+      'bold', 'italic', 'underline', 'strike', 'blockquote',
+      'list', 'bullet', 'indent',
+      'link', 'image'
+    ];
 
     return (
       <Dialog  
@@ -76,17 +126,29 @@ const BlogModal = props => {
             </Form.Group>
             <Form.Group controlId="formBasicEmail">
                     <Form.Label>Nội dung</Form.Label>
-                    <ReactQuill value={blog.Content} onChange={handleChange} />
+                    <ReactQuill theme="snow" value={blog.Content} onChange={handleChange} modules={modules} formats={formats} />
             </Form.Group>
             <Form.Group controlId="formBasicEmail">
-                    <Form.Label>Tag</Form.Label>
-                    <Select value={blog.InGroup} multiple={true}>
+                    <Form.Label className="mr-2">Tag</Form.Label>
+                    <Select
+                        multiple={selectMulti}
+                        labelId="demo-simple-select-outlined-label"
+                        id="demo-simple-select-outlined"
+                        value={inGroup}
+                        label="InGroup"
+                        onChange={handleChangeTag}
+                      >
+                        {TAG_LIST && TAG_LIST.length ? TAG_LIST.map((tag,index)=>(
+                          <MenuItem key={index} value={tag.code}>{tag.name}</MenuItem>
+                        )) : ""}
+                      </Select>
+                    {/* <Select value={blog.InGroup} multiple={true}>
                       {
                         TAG_LIST.map( tag => {
                           return <Select.Option key={tag.code} label={tag.name} value={tag.code} />
                         })
                       }
-                    </Select>  
+                    </Select>   */}
               </Form.Group>
         </DialogContent>
         <DialogActions>
