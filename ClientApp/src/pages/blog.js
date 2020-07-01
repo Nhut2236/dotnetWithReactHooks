@@ -147,10 +147,7 @@ const Blog = () => {
                   </Col>
                   <Col md="4">
                     <FormControl variant="outlined" style={{ minWidth: 120 }}>
-                      <InputLabel id="demo-simple-select-outlined-label">Trạng thái</InputLabel>
                       <Select
-                        labelId="demo-simple-select-outlined-label"
-                        id="demo-simple-select-outlined"
                         value={isPublish}
                         onChange={handleChangeStatus}
                         label="isPublish"

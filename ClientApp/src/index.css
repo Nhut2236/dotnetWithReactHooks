@@ -39,7 +39,6 @@ li.link-wrapper > a.active {
 }
 
 .MuiSelect-select.MuiSelect-select {
-    padding: 10px;
-    border: 1px solid #c3c3c3;
+    padding: 15px;
     border-radius: 5px !important;
 }
