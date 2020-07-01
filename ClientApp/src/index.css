@@ -15,3 +15,25 @@ li.link-wrapper > a.active {
     color: white;
     background-color: blue;
 }
+
+.button-custom{
+    padding: 10px 20px 10px 20px !important;
+    border-radius: 15px !important;
+}
+
+.input-custom{
+    padding: 26px !important;
+    border-radius: 15px !important;
+}
+.select-custom{
+    border-radius: 15px !important;
+}
+
+.navbar-light .navbar-nav .nav-link.active{
+    color: #5fc5e0 !important;
+    font-weight: bolder;
+}
+
+.navbar-light .navbar-nav > a:hover {
+    color: red !important;
+  }

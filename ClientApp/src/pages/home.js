@@ -64,7 +64,7 @@ const Home = () => {
   },[]);
 
   return (
-    <div>
+    <div style={{marginTop: '80px'}}>
       <div style={bannerStyle} className="mt-3">
         <div className="container">
           <BlogDetailsCarousel />

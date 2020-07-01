@@ -30,7 +30,7 @@ const Register = () => {
   };
 
   return (
-    <div className="container">
+    <div className="container" style={{marginTop: '100px'}}>
     <div className="flex-row" style={divStyle}>
       <div className="flex-large">
         <RegisterForm registerForm={registerForm} register={RegisterFromApi} />

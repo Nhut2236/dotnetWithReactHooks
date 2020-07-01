@@ -5,6 +5,7 @@ import { HOME, ABOUT, BLOG, BLOGDETAILS, LOGIN, REGISTER } from "./router";
 import { Image, NavDropdown } from 'react-bootstrap';
 import FloatButton from './components/floatButton/FloatButton';
 import ReactIcon from './assets/svgs/react.svg';
+// import SideBar from './components/sidebar/Sidebar';
 //import PageComponents
 const HomeComponent = React.lazy(() => import("./pages/home"));
 const AboutComponent = React.lazy(() => import("./pages/about"));
@@ -38,36 +39,26 @@ const avatarStyle = {
 };
 
 const App = () => {
+    const pathname = window.location.pathname;
     return (
       <div>
         <div>
           <Router>
             <div>
-              <Navbar expand="lg" bg="" className="container" style={{backgroundColor: 'none'}}>
+              <Navbar expand="lg" bg="" style={{backgroundColor: 'white', borderBottom: '2px solid #f1f1f1'}} fixed="top">
                 <Navbar.Brand href="/" style={{marginRight: '30px'}}><img src={ReactIcon} style={{ width: '50px'}} /><span className="ml-3">React Demo</span></Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
-                  <Nav className="mr-auto">
-                    <Nav.Link href="/" style={{ fontSize: '18px', marginRight: '30px'}}>Home</Nav.Link>
-                    <Nav.Link href="/about" style={{ fontSize: '18px', marginRight: '30px'}}>About</Nav.Link>
-                    <Nav.Link href="/blog" style={{ fontSize: '18px', marginRight: '30px'}}>Blog</Nav.Link>
+                  <Nav className="mr-auto" activeKey={pathname}>
+                    <Nav.Link href="/" style={{ fontSize: '18px', marginLeft: '20px'}}>Home</Nav.Link>
+                    <Nav.Link href="/about" style={{ fontSize: '18px', marginLeft: '20px'}}>About</Nav.Link>
+                    <Nav.Link href="/blog" style={{ fontSize: '18px', marginLeft: '20px'}}>Blog</Nav.Link>
                   </Nav>
-                  {Token && userInfo && userInfo.Avatar ? (
-                    <Image
-                      src={userInfo.Avatar}
-                      roundedCircle
-                      style={avatarStyle}
-                    />
-                  ) : (
-                    <span></span>
-                  )}
-
                   {Token && userInfo && userInfo.Name ? (
                     <NavDropdown
-                      title={userInfo.Name}
+                      title={<span><Image src={userInfo.Avatar} roundedCircle style={avatarStyle}/><span style={{color: 'black'}} className="ml-2">{userInfo.Name}</span></span>}
                       id="basic-nav-dropdown"
-                      style={userNameStyle}
-                      style={{ paddingRight: '5px', color: 'black'}}
+                      style={userNameStyle} 
                     >
                       <NavDropdown.Item href="/blog">
                         Quản lý Blog
@@ -91,13 +82,14 @@ const App = () => {
                     <div>
                       <Button
                         variant="danger"
-                        className="mr-2"
+                        className="mr-2 ml-3 button-custom"
                         onClick={() => redirectTo("/register")}
                       >
                         Sign Up
                       </Button>
                       <Button
                         variant="primary"
+                        className="button-custom"
                         onClick={() => redirectTo("/login")}
                       >
                         Sign In
@@ -132,7 +124,7 @@ const App = () => {
           </Router>
         </div>
         <div>
-          {/* <FloatButton /> */}
+          {/* <SideBar /> */}
         </div>
       </div>
     );

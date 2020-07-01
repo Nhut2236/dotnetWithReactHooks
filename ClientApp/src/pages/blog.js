@@ -126,7 +126,7 @@ const Blog = () => {
   ]
 
   return (
-    <div className="container">
+    <div className="container" style={{marginTop: '100px'}}>
       <div className="flex-row" style={divStyle}>
         <div className="flex-large">
           <div className="mt-3 mb-3">
@@ -137,10 +137,11 @@ const Blog = () => {
                   <Form.Group controlId="formBasicEmail">
                     <Form.Control
                       type="text"
-                      placeholder="Title"
+                      placeholder="Tiêu đề"
                       name="Title"
                       value={title}
                       onChange={handleTitleChange}
+                      className="input-custom"
                     />
                   </Form.Group>
                   </Col>
@@ -153,6 +154,7 @@ const Blog = () => {
                         value={isPublish}
                         onChange={handleChangeStatus}
                         label="isPublish"
+                        className="select-custom"
                       >
                         {statusList && statusList.length ? statusList.map((status,index)=>(
                           <MenuItem key={index} value={status.isPublish}>{status.name}</MenuItem>
@@ -163,8 +165,8 @@ const Blog = () => {
                 </Row>
               </Col>
               <Col md="5" className="text-right">
-                { show && checkList && checkList.length ? <Button variant="danger" className="mr-3">Xóa</Button> : ""}
-                <Button variant="info">Tạo mới</Button>
+                { show && checkList && checkList.length ? <Button variant="danger" className="mr-3 button-custom">Xóa</Button> : ""}
+                <Button variant="info" className="button-custom">Tạo mới</Button>
               </Col>
             </Row>
             </div>

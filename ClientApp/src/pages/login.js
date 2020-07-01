@@ -48,7 +48,7 @@ const Login = () => {
   };
 
   return (
-    <div className="container">
+    <div className="container" style={{marginTop: '100px'}}>
     <div className="flex-row" style={divStyle}>
       <div className="flex-large">
         <LoginForm loginForm={loginForm} login={LoginFromApi} />
