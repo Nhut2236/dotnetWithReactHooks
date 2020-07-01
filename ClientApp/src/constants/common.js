@@ -28,6 +28,11 @@ export const BANNER_ITEMS = [
       text: "Không phải là tiền bạc, đồ chơi đắt tiền, quần áo hàng hiệu, những chuyến du lịch xa xỉ, nhà ở hiện đại hay ô tô, điện thoại thông minh, máy tính bảng… mang đến cho trẻ niềm vui hay cảm giác thực sự hạnh phúc thức sự. Chính những điều vô cùng đơn giản mà trẻ được trải nghiệm với bố mẹ hàng ngày mới là bí mật làm nên cảm giác hạnh phúc 'bền vững' cho mọi đứa trẻ.",
       image: require('../assets/img/reading-books.png')
     },
+    {
+      title: "Hafarm",
+      text: "Không phải là tiền bạc, đồ chơi đắt tiền, quần áo hàng hiệu, những chuyến du lịch xa xỉ, nhà ở hiện đại hay ô tô, điện thoại thông minh, máy tính bảng… mang đến cho trẻ niềm vui hay cảm giác thực sự hạnh phúc thức sự. Chính những điều vô cùng đơn giản mà trẻ được trải nghiệm với bố mẹ hàng ngày mới là bí mật làm nên cảm giác hạnh phúc 'bền vững' cho mọi đứa trẻ.",
+      image: require('../assets/img/reading-books.png')
+    },
 ];
 
 export const INTRO_ITEMS = [

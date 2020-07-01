@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { Navbar, Nav, Form, FormControl, Button } from 'react-bootstrap';
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { HOME, ABOUT, BLOG, BLOGDETAILS, LOGIN, REGISTER } from "./router";
@@ -39,6 +39,30 @@ const avatarStyle = {
 };
 
 const App = () => {
+    const [permission, setPermission] = useState(null);
+
+    const getPermission = async () => {
+      const apiPath = `/api/Permission/Get/${userInfo.Permission}`;
+      const response = await fetch(apiPath, {
+          method: 'GET',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type':'application/json',
+            'Authorization': `Bearer ${Token}`
+          },
+        }).then(response => {
+          response.json().then(data =>{
+            setPermission(data.data);
+          })
+        });
+    };
+
+    useEffect( () =>{
+      if(Token && userInfo.Permission){
+        getPermission();
+      }
+    },[]);
+
     var pathname = window.location.pathname;
     if(pathname.includes('/blog')){
       pathname = '/blog'
@@ -55,20 +79,24 @@ const App = () => {
                   <Nav className="mr-auto" activeKey={pathname}>
                     <Nav.Link href="/" style={{ fontSize: '18px', marginLeft: '20px'}}>Home</Nav.Link>
                     <Nav.Link href="/about" style={{ fontSize: '18px', marginLeft: '20px'}}>About</Nav.Link>
-                    <Nav.Link href="/blog" style={{ fontSize: '18px', marginLeft: '20px'}}>Blog</Nav.Link>
+                    { permission && permission.ViewBlog ? (<Nav.Link href="/blog" style={{ fontSize: '18px', marginLeft: '20px'}}>Blog</Nav.Link>) : "" }
                   </Nav>
-                  {Token && userInfo && userInfo.Name ? (
+                  {Token && userInfo && userInfo.Name && permission ? (
                     <NavDropdown
                       title={<span><Image src={userInfo.Avatar} roundedCircle style={avatarStyle}/><span style={{color: 'black'}} className="ml-2">{userInfo.Name}</span></span>}
                       id="basic-nav-dropdown"
                       style={userNameStyle} 
                     >
-                      <NavDropdown.Item href="/blog">
-                        Quản lý Blog
-                      </NavDropdown.Item>
-                      <NavDropdown.Item>
-                        Quản lý Event
-                      </NavDropdown.Item>
+                      { permission && permission.ViewBlog ? (
+                          <NavDropdown.Item href="/blog">
+                            Quản lý Blog
+                          </NavDropdown.Item>
+                      ) : "" }  
+                      { permission && permission.ViewEvent ? (
+                          <NavDropdown.Item>
+                            Quản lý Event
+                          </NavDropdown.Item>
+                      ) : "" }                    
                       <NavDropdown.Item>
                         Quản lý User
                       </NavDropdown.Item>
