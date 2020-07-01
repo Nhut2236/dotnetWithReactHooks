@@ -39,7 +39,10 @@ const avatarStyle = {
 };
 
 const App = () => {
-    const pathname = window.location.pathname;
+    var pathname = window.location.pathname;
+    if(pathname.includes('/blog')){
+      pathname = '/blog'
+    }
     return (
       <div>
         <div>

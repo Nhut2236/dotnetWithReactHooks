@@ -4,7 +4,8 @@ import  { BANNER_ITEMS } from '../../constants/common';
 import ImageRainbow from '../../assets/img/cloud-rainbow.svg';
 const BlogDetailsCarousel = props => {
     const [ bannerItems, setBannerItems ] = useState(BANNER_ITEMS);
-    
+    const [ controls, setControls ] = useState(false);
+
     const imgStyle = {
         width: '700px',
         height: 'auto'
@@ -23,25 +24,25 @@ const BlogDetailsCarousel = props => {
     };
 
     return (
-      <Carousel interval="2000">
+      <Carousel interval="2000" controls={controls}>
         {bannerItems && bannerItems.length
           ? bannerItems.map((item, index) => (
               <Carousel.Item key={index}>
                 <Row>
-                  <Col md="4">
+                  <Col md="5">
                     <div style={titleStyle}>
                       <Row>
-                        <Col md="10" xs="9">
+                        <Col md="9" xs="9">
                           <span style={borderBottomStyle}>{item.title}</span>
                         </Col>
-                        <Col md="2" xs="3">
+                        <Col md="3" xs="3">
                           <img src={ImageRainbow} />
                         </Col>
                       </Row>
                     </div>
                     <div className="text-justify">{item.text}</div>
                   </Col>
-                  <Col md="8">
+                  <Col md="7">
                     <img
                       className="d-block"
                       src={item.image}
