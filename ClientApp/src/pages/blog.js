@@ -51,6 +51,10 @@ const Blog = () => {
     setEditing(value);
   }
 
+  const redirectTo = (path) => {
+    window.location.href = path;
+  }
+
   const globalState = useContext(store);
   const { dispatch } = globalState;
 
@@ -181,7 +185,7 @@ const Blog = () => {
               </Col>
               <Col md="5" className="text-right">
                 { show && checkList && checkList.length ? <Button variant="danger" className="mr-3 button-custom" onClick={()=> deleteBlogs() }>Xóa</Button> : ""}
-                <Button variant="info" className="button-custom">Tạo mới</Button>
+                <Button variant="info" className="button-custom" onClick={()=> redirectTo('/blogDetails/new-blog') }>Tạo mới</Button>
               </Col>
             </Row>
             </div>
