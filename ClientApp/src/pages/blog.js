@@ -123,7 +123,25 @@ const Blog = () => {
   const statusList = [
     { name: 'Đang đăng', isPublish: true },
     { name: 'Đang ẩn', isPublish: false }
-  ]
+  ];
+
+  const deleteBlogs = async () => {
+    const Token = localStorage.getItem("TOKEN");
+    const apiPath = `/api/Blog/delete`;
+    const response = await fetch(apiPath, {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type':'application/json',
+          'Authorization': `Bearer ${Token}`
+        },
+        body: JSON.stringify({ Ids: checkList }),
+      }).then(response => {
+        response.json().then(data =>{
+          getDataFromApi(title, isPublish);
+        })
+      });
+  };
 
   return (
     <div className="container" style={{marginTop: '100px'}}>
@@ -162,7 +180,7 @@ const Blog = () => {
                 </Row>
               </Col>
               <Col md="5" className="text-right">
-                { show && checkList && checkList.length ? <Button variant="danger" className="mr-3 button-custom">Xóa</Button> : ""}
+                { show && checkList && checkList.length ? <Button variant="danger" className="mr-3 button-custom" onClick={()=> deleteBlogs() }>Xóa</Button> : ""}
                 <Button variant="info" className="button-custom">Tạo mới</Button>
               </Col>
             </Row>
