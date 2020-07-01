@@ -1,9 +1,20 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { Image, Row, Col, Button, Form } from 'react-bootstrap';
+import {TAG_LIST} from '../../constants/common';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
+import ReactQuill, { Quill, Mixin, Toolbar } from 'react-quill'; 
+import 'react-quill/dist/quill.snow.css';
+import NoImage from '../../assets/svgs/no-image.svg';
+import LinkedStateMixin from 'react-addons-linked-state-mixin'; // ES6
 
 const BlogDetailsForm = props => {
-  const [ currentData, setCurrentData ] = useState(props.currentData)
-
+  const [ currentData, setCurrentData ] = useState(props.currentData);
+  const inGroupParse = JSON.parse(currentData.InGroup);
+  const [ inGroup, setInGroup ] = useState(inGroupParse);
+  const [ avatar, setAvatar ] = useState(currentData && currentData.Avatar ? currentData.Avatar : NoImage );
+  const [ uploadProcessing, setUploadProcessing ] = useState(false);
+  const file = useRef(null);  
   useEffect(
     () => {
         setCurrentData(props.currentData)
@@ -22,7 +33,7 @@ const BlogDetailsForm = props => {
   }
   
   const avatarStyle = {
-    width: '200px',
+    width: '300px',
   };
 
   const saveBlog = () => {
@@ -30,56 +41,157 @@ const BlogDetailsForm = props => {
   }
 
   const saveDataApi = async () => {
-    const apiPath = `https://reqres.in/api/users/${currentData.id}`;
+    currentData.Avatar = avatar;
+    const Token = localStorage.getItem("TOKEN");
+    const apiPath = `/api/Blog/Update`;
     const response = await fetch(apiPath, {
-        method: 'PUT',
+        method: 'POST',
         headers: {
           'Accept': 'application/json',
           'Content-Type':'application/json',
+          'Authorization': `Bearer ${Token}`
         },
         body: JSON.stringify(currentData)
       }).then(response => {
         response.json().then(data =>{
-            console.log(data);
+            setCurrentData(data.data);
+            setAvatar(currentData.Avatar);
         })
       });
 }
  
+const selectMulti = true;
+
+const handleChangeTag = event => {
+  setInGroup(event.target.value);
+};
+
+const modules = {
+  toolbar: [
+    [{ 'header': [1, 2, false] }],
+    ['bold', 'italic', 'underline','strike', 'blockquote'],
+    [{'list': 'ordered'}, {'list': 'bullet'}, {'indent': '-1'}, {'indent': '+1'}],
+    ['link', 'image', 'video'],
+    ['clean']
+  ]
+};
+
+const formats = [
+  'header',
+  'bold', 'italic', 'underline', 'strike', 'blockquote',
+  'list', 'bullet', 'indent',
+  'link', 'image'
+];
+
+
+const handleChangeContent = (value) => {
+  currentData.Content =  value;
+}
+
+const chooseFile = (e) => {
+    console.log(avatar);
+    file.current.click();
+};
+
+const handleFileUpload = (e) => {
+  var size = parseFloat(file.current.files[0].size / 1024).toFixed(2);
+  var fileTemp = file.current.files[0];
+  if (fileTemp) {
+    var reader = new FileReader();
+    reader.onload = e => {
+      setAvatar(e.target.result);
+    };
+    reader.readAsDataURL(fileTemp);
+  }
+};
+
+const handleChange = (value) => {
+};
 
   return (
     <div>
       <div>
-        <Row>
-          <Col xs={{ span: 3, offset: 2 }} md={{ span: 8, offset: 4 }}>
-            <Image src={currentData.avatar} roundedCircle style={avatarStyle} />
-          </Col>
-        </Row>
-        <br />
         <Form.Group controlId="formBasicEmail">
-             <Form.Label>First Name</Form.Label>
-             <Form.Control type="text" placeholder="first_name" name="first_name" value={currentData.first_name} onChange={handleInputChange}  />
+          <Form.Label className="font-weight-bold">Tiêu đề</Form.Label>
+          <Form.Control
+            className="input-custom"
+            type="text"
+            placeholder="Title"
+            name="Title"
+            value={currentData.Title}
+            onChange={handleInputChange}
+          />
         </Form.Group>
         <Form.Group controlId="formBasicEmail">
-             <Form.Label>Last Name</Form.Label>
-             <Form.Control type="text" placeholder="last_name" name="last_name" value={currentData.last_name} onChange={handleInputChange}  />
+          <Form.Label className="font-weight-bold">Mô tả</Form.Label>
+          <Form.Control
+            className="input-custom"
+            type="text"
+            placeholder="Description"
+            name="Description"
+            value={currentData.Description}
+            onChange={handleInputChange}
+          />
         </Form.Group>
         <Form.Group controlId="formBasicEmail">
-             <Form.Label>Email</Form.Label>
-             <Form.Control type="email" placeholder="email" name="email" value={currentData.email} onChange={handleInputChange}  />
+          <Form.Label className="font-weight-bold">Nội dung</Form.Label>
+          <ReactQuill
+            theme="snow"
+            value={currentData.Content}
+            onChange={handleChangeContent}
+            modules={modules}
+            formats={formats}
+          />
+        </Form.Group>
+        <Form.Group controlId="formBasicEmail">
+          <Form.Label className="mr-2 font-weight-bold">Tag</Form.Label><br/>
+          <Select
+            multiple={selectMulti}
+            labelId="demo-simple-select-outlined-label"
+            id="demo-simple-select-outlined"
+            value={inGroup}
+            label="InGroup"
+            onChange={handleChangeTag}
+          >
+            {TAG_LIST && TAG_LIST.length
+              ? TAG_LIST.map((tag, index) => (
+                  <MenuItem key={index} value={tag.code}>
+                    {tag.name}
+                  </MenuItem>
+                ))
+              : ""}
+          </Select>
         </Form.Group>
       </div>
+      <br />
+      <Form.Group controlId="formBasicEmail">
+          <div>
+            <input style={{ visibility: 'hidden' }} type="file" id="file" ref={file} onChange={ () => handleFileUpload() } />
+          </div>
+          <Form.Label className="mr-2 font-weight-bold">Ảnh đại diện</Form.Label>
+          <div>
+          { currentData && avatar ? 
+            <Image src={avatar}  style={avatarStyle}  onChange={handleChange()} />  : ""
+          }           
+          </div>
+          <div className="mt-1">
+            <span title="Upload ảnh">
+              <Button disabled={uploadProcessing} variant="light" onClick={ () => chooseFile() }><i className="fa fa-image"></i></Button>
+            </span>
+          </div>
+      </Form.Group>
       <br />
       <div className="text-right">
         <Button
           variant="secondary"
-          className="mr-2"
+          className="mr-2 button-custom"
           onClick={() => redirectTo("/blog")}
         >
           {" "}
           <i className="fa fa-chevron-left mr-2" />
           Quay lại
         </Button>
-        <Button variant="primary" onClick={() => saveBlog(currentData)}>
+        <Button variant="primary" className="button-custom" onClick={() => saveBlog(currentData)}>
           Lưu
         </Button>
       </div>

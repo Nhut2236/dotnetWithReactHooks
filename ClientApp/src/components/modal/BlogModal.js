@@ -116,7 +116,7 @@ const BlogModal = props => {
       >
         <DialogTitle id="alert-dialog-title" style={{backgroundColor: '#333c45', color: 'white'}}>{props.Title}</DialogTitle>
         <DialogContent>
-        <Form.Group controlId="formBasicEmail">
+            <Form.Group controlId="formBasicEmail">
              <Form.Label>Tiêu đề</Form.Label>
              <Form.Control type="text" placeholder="Title" name="Title" value={blog.Title} onChange={handleInputChange}  />
             </Form.Group>
@@ -142,13 +142,6 @@ const BlogModal = props => {
                           <MenuItem key={index} value={tag.code}>{tag.name}</MenuItem>
                         )) : ""}
                       </Select>
-                    {/* <Select value={blog.InGroup} multiple={true}>
-                      {
-                        TAG_LIST.map( tag => {
-                          return <Select.Option key={tag.code} label={tag.name} value={tag.code} />
-                        })
-                      }
-                    </Select>   */}
               </Form.Group>
         </DialogContent>
         <DialogActions>

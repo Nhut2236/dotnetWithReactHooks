@@ -17,6 +17,7 @@
     "quill-image-drop-module": "^1.0.3",
     "quill-image-resize-module": "^3.0.0",
     "react": "^16.9.0",
+    "react-addons-linked-state-mixin": "^15.6.2",
     "react-bootstrap": "^1.0.1",
     "react-bootstrap-multiselect": "^2.4.1",
     "react-dom": "^16.9.0",

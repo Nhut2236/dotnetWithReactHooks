@@ -6,16 +6,18 @@ import { store } from '../store';
 
 const LogDetails = () => {
   const params = useParams();
-  const dataFake = { avatar: "", email: "", first_name: "", last_name: "" };
+  const dataFake = { Avatar: null, Title: "", Description: "", InGroup: [] };
   const [currentId, setCurrentId] = useState(params.id);
   const [currentData, setCurrentData] = useState(dataFake);
   const GetById = async () => {
-    const apiPath = `https://reqres.in/api/users/${currentId}`;
+    const Token = localStorage.getItem("TOKEN");
+    const apiPath = `/api/Blog/Get/${currentId}`;
     const response = await fetch(apiPath, {
       method: "GET",
       headers: {
-        Accept: "application/json",
+        "Accept": "application/json",
         "Content-Type": "application/json",
+        'Authorization': `Bearer ${Token}`
       },
     }).then((response) => {
       response.json().then((data) => {
@@ -26,6 +28,7 @@ const LogDetails = () => {
 
   const divStyle = {
     marginTop: "2%",
+    marginTop: '100px'
   };
 
   useEffect(() => {
@@ -34,7 +37,7 @@ const LogDetails = () => {
 
   return (
     <div className="container" style={divStyle}>
-      <BlogDetailsForm currentData={currentData} />
+      { currentData && currentData.Title ? <BlogDetailsForm currentData={currentData} /> : "" }
     </div>
   );
 };
