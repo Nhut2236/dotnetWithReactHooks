@@ -38,7 +38,6 @@ const LogDetails = () => {
     GetById();
   }, []);
 
-  console.log(currentData);
   return (
     <div className="container" style={divStyle}>
       { currentData && currentData.Title ? <BlogDetailsForm currentData={currentData} /> : <BlogCreateForm currentData={currentData} /> }

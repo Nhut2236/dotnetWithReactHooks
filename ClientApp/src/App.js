@@ -40,7 +40,7 @@ const avatarStyle = {
 
 const App = () => {
     const [permission, setPermission] = useState(null);
-
+    
     const getPermission = async () => {
       const apiPath = `/api/Permission/Get/${userInfo.Permission}`;
       const response = await fetch(apiPath, {
@@ -137,9 +137,11 @@ const App = () => {
                   <Route path={LOGIN}>
                     <LoginComponent />,
                   </Route>
+                  { permission && permission.ViewBlog ? (
                   <Route path={BLOG}>
                     <BlogComponent />,
                   </Route>
+                  ) : "" }
                   <Route path={BLOGDETAILS}>
                     <BlogDetailsComponent />,
                   </Route>

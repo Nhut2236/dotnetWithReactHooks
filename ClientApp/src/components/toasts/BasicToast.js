@@ -7,8 +7,9 @@ const BasicToast = props => {
       <div
         style={{
           position: "absolute",
-          top: 10,
+          top: 80,
           right: 10,
+          zIndex: 1
         }}
       >
         <Toast onClose={props.toggleShow} show={show} delay={2000} autohide>
