@@ -7,7 +7,7 @@ const { Provider } = store;
 const StateProvider = ( { children } ) => {
   const [state, dispatch] = useReducer((state, action) => {
     switch(action.type) {
-      case 'change color':
+      case 'SET_COLOR':
         state.color = action.value;
         return state;
       case 'SET_BLOGLIST':

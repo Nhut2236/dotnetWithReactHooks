@@ -43,6 +43,7 @@ const Blog = () => {
           setBlogList(data.data.Data);
           setTotal(data.data.Total);
           dispatch({ type: "SET_BLOGLIST", value: { data: data.data.Data , total: data.data.Total } });
+          dispatch({ type: "SET_COLOR", value: 'red' });
         })
       });
   }
@@ -58,6 +59,7 @@ const Blog = () => {
 
   const globalState = useContext(store);
   const { dispatch } = globalState;
+  console.log(globalState);
 
   useEffect(() => {
     getDataFromApi("",true);

@@ -1,10 +1,11 @@
-import React, { Suspense, useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState, useContext } from "react";
 import { Navbar, Nav, Form, FormControl, Button } from 'react-bootstrap';
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { HOME, ABOUT, BLOG, BLOGDETAILS, LOGIN, REGISTER } from "./router";
 import { Image, NavDropdown } from 'react-bootstrap';
 import FloatButton from './components/floatButton/FloatButton';
 import ReactIcon from './assets/svgs/react.svg';
+import {store} from './store';
 // import SideBar from './components/sidebar/Sidebar';
 //import PageComponents
 const HomeComponent = React.lazy(() => import("./pages/home"));
@@ -39,6 +40,8 @@ const avatarStyle = {
 };
 
 const App = () => {
+    const globalState = useContext(store);
+    const { dispatch } = globalState;
     const [permission, setPermission] = useState(null);
     
     const getPermission = async () => {
@@ -53,6 +56,7 @@ const App = () => {
         }).then(response => {
           response.json().then(data =>{
             setPermission(data.data);
+            dispatch({ type: 'SET_COLOR', value: 'black' });
           })
         });
     };
