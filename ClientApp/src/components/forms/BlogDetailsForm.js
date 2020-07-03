@@ -70,7 +70,6 @@ const handleChangeTag = event => {
 };
 
 const modules = {
-  ImageResize: {},
   toolbar: [
     [{ 'header': [1, 2, false] }],
     ['bold', 'italic', 'underline','strike', 'blockquote'],
@@ -156,10 +155,11 @@ const toggleShow = () => {
             <br />
             <Select
               multiple={selectMulti}
-              labelId="demo-simple-select-outlined-label"
-              id="demo-simple-select-outlined"
+              id="demo-customized-select-label"
+              labelId="demo-customized-select-label"
               value={inGroup}
               label="InGroup"
+              className="multi-select-custom"
               onChange={handleChangeTag}
             >
               {TAG_LIST && TAG_LIST.length
